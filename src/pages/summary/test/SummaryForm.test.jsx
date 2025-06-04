@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect } from "vitest";
 import SummaryForm from "../SummaryForm";
+import userEvent from "@testing-library/user-event";
 
 describe("Summary Form", () => {
   beforeEach(() => {
@@ -15,7 +16,9 @@ describe("Summary Form", () => {
     expect(buttonElement).toBeDisabled()
   })
 
-  test("confirm button should be enabled when tnc checkbox is checked and vice versa", () => {
+  test("confirm button should be enabled when tnc checkbox is checked and vice versa", async () => {
+    const user = userEvent.setup()
+
     const checkboxElement = screen.getByRole("checkbox", {name: /terms and conditions/i})
     const buttonElement = screen.getByRole("button", {name: /confirm order/i})
 
@@ -24,11 +27,11 @@ describe("Summary Form", () => {
     expect(buttonElement).toBeDisabled()
 
     // click unchecked checkbox -> checkbox checked and button enabled
-    fireEvent.click(checkboxElement)
+    await user.click(checkboxElement)
     expect(buttonElement).toBeEnabled()
 
     // click again the checkbox to be unchecked and the button to be disabled
-     fireEvent.click(checkboxElement)
+    await user.click(checkboxElement)
     expect(buttonElement).toBeDisabled()
   })
 })
