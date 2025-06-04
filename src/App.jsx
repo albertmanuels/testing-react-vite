@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { kebabCaseToTitleCase } from './helpers'
+import SummaryForm from './pages/summary/SummaryForm'
 
 function App() {
   const [buttonColor, setButtonColor] = useState("medium-violet-red")
@@ -28,6 +29,8 @@ function App() {
         }} 
       />
       <label htmlFor='disable-button-checkbox'>Disable button</label>
+
+      <SummaryForm/>
     </div>
   )
 }
