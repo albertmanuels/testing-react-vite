@@ -24,6 +24,7 @@ module.exports = {
     "no-unused-vars": "warn", // warning, not error
     "vitest/expect-expect": "off", // distracting red squiggles while writing tests
     "react/prop-types": "off", // turn off props validation
+    "testing-library/no-render-in-lifecycle": ["off", {"allowTestingFrameworkSetupHook": ["beforeAll", "beforeEach"]}],
   },
   globals: {
     ...vitest.environments.env.globals,
