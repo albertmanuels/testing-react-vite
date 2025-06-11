@@ -3,6 +3,7 @@ import { beforeEach, describe, expect } from "vitest";
 import SummaryForm from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "../../../utilities/test-utils/testing-library-utils"
+import { act } from "react";
 
 describe("Summary Form", () => {
   beforeEach(() => {
@@ -28,11 +29,15 @@ describe("Summary Form", () => {
     expect(buttonElement).toBeDisabled()
 
     // click unchecked checkbox -> checkbox checked and button enabled
-    await user.click(checkboxElement)
+    await act(async () => {
+      await user.click(checkboxElement)
+    })
     expect(buttonElement).toBeEnabled()
 
     // click again the checkbox to be unchecked and the button to be disabled
-    await user.click(checkboxElement)
+    await act(async () =>{
+      await user.click(checkboxElement)
+    })
     expect(buttonElement).toBeDisabled()
   })
 
@@ -44,14 +49,19 @@ describe("Summary Form", () => {
 
     // popover starts out hidden
     expect(nullPopoverElement).not.toBeInTheDocument()
-    await user.hover(checkboxLabel)
-
+    await act(async () =>{
+      await user.hover(checkboxLabel)
+    })
+   
     // popover appreas on mouseover of checkbox label
     const popoverElement = screen.getByText(/ice cream/i)
     expect(popoverElement).toBeInTheDocument()
 
     // popover disappears when we mouse out
-    await user.unhover(checkboxLabel)
+    await act(async () => {
+      await user.unhover(checkboxLabel)
+    })
+ 
     expect(nullPopoverElement).not.toBeInTheDocument()
   })
 })
