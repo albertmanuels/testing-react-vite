@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { OrderDetailsProvider } from "../../context/OrderDetails";
 
-const renderWithContext = async(ui, options) => render(ui, {wrapper: OrderDetailsProvider, ...options})
+const renderWithContext = (ui, options) => render(ui, {wrapper: OrderDetailsProvider, ...options})
 
 export * from "@testing-library/react"
 

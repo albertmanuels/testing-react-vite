@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "../../../utilities/test-utils/testing-library-utils";
+import { render, screen } from "../../../utilities/test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test } from "vitest";
 import Options from "../Options";
@@ -14,19 +14,18 @@ describe("totalOrder", () => {
     expect(scoopsSubtotal).toHaveTextContent("0.00")
 
     // update vanilla scoops to 1, and check subtotal
-    await waitFor(async () => {
-      let vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"}) 
+    let vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"}) 
 
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "1")
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "1")
 
-      expect(scoopsSubtotal).toHaveTextContent("2.00")
+    expect(scoopsSubtotal).toHaveTextContent("2.00")
 
-      // update chocolate scoops to 1, and check subtotal
-      const chocolateInput = await screen.findByRole("spinbutton", {name: "Chocolate"})
-      await user.clear(chocolateInput)
-      await user.type(chocolateInput, "2")
-    })
+    // update chocolate scoops to 1, and check subtotal
+    const chocolateInput = await screen.findByRole("spinbutton", {name: "Chocolate"})
+    await user.clear(chocolateInput)
+    await user.type(chocolateInput, "2")
+
      expect(scoopsSubtotal).toHaveTextContent("6.00")
   })
 
@@ -36,30 +35,22 @@ describe("totalOrder", () => {
 
     const toppingsTotal = screen.getByText("Toppings total: ", {exact: false})
     expect(toppingsTotal).toHaveTextContent("0.00")
+    const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
 
-    await waitFor(async () => {
-      const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
+    await user.click(cherriesCheckbox)
+    expect(toppingsTotal).toHaveTextContent("1.50")
+    const hotFudge = await screen.findByRole("checkbox", {name: "Hot fudge"})
+    await user.click(hotFudge)
+    expect(toppingsTotal).toHaveTextContent("3.00")
 
-      await user.click(cherriesCheckbox)
-      expect(toppingsTotal).toHaveTextContent("1.50")
-    })
 
-    await waitFor(async () => {
-      const hotFudge = await screen.findByRole("checkbox", {name: "Hot fudge"})
-      await user.click(hotFudge)
-      expect(toppingsTotal).toHaveTextContent("3.00")
-    })
-
-    await waitFor(async() => {
-      const hotFudge = await screen.findByRole("checkbox", {name: "Hot fudge"})
-      await user.click(hotFudge)
-      expect(toppingsTotal).toHaveTextContent("1.50")
-    })
+    await user.click(hotFudge)
+    expect(toppingsTotal).toHaveTextContent("1.50")
   })
 })
 
 describe('grand total', () => { 
-  test("grand total start at $0.00", async () =>  {
+  test("grand total start at $0.00", () =>  {
     render(<OrderEntry />)
 
     const grandTotal = screen.getByRole("heading", {name: /Grand Total: \$/})
@@ -70,22 +61,17 @@ describe('grand total', () => {
     const user = userEvent.setup()
 
     const grandTotal = screen.getByRole("heading", {name: /Grand Total: \$/})
-
-    await waitFor(async () => {
-      const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
+    const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
       
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "1")
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "1")
 
-      expect(grandTotal).toHaveTextContent("2.00")
-    })
+    expect(grandTotal).toHaveTextContent("2.00")
 
-    await waitFor(async () => {
-      const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
+    const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
 
-      await user.click(cherriesCheckbox)
-      expect(grandTotal).toHaveTextContent("3.50")
-    })
+    await user.click(cherriesCheckbox)
+    expect(grandTotal).toHaveTextContent("3.50")
   })
 
   test("grand total updates properly if topping is added first", async () => {
@@ -94,30 +80,22 @@ describe('grand total', () => {
 
     const grandTotal = screen.getByRole("heading", {name: /Grand Total: \$/})
 
-    await waitFor(async () => {
-      const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
-      await user.click(cherriesCheckbox)
+    const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
+    await user.click(cherriesCheckbox)
 
-      expect(grandTotal).toHaveTextContent("1.50")
-    })
-   
+    expect(grandTotal).toHaveTextContent("1.50")
 
-    await waitFor(async () => {
-      const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
-      
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "1")
+    const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
+    
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "1")
 
-      expect(grandTotal).toHaveTextContent("3.50")
-    })
+    expect(grandTotal).toHaveTextContent("3.50")
 
-    await waitFor(async () => {
-      const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "2")
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "2")
 
-      expect(grandTotal).toHaveTextContent("5.50")
-    })
+    expect(grandTotal).toHaveTextContent("5.50")
   })
 
   test("grand total updates properly if item is removed", async () => {
@@ -126,34 +104,22 @@ describe('grand total', () => {
 
     const grandTotal = screen.getByRole("heading", {name: /Grand Total: \$/})
 
-    await waitFor(async () => {
-      const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
-      await user.click(cherriesCheckbox)
-      
-      expect(grandTotal).toHaveTextContent("1.50")
-    })
-
-    await waitFor(async () => {
-      const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
+    const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
+    await user.click(cherriesCheckbox)
     
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "3")
-      expect(grandTotal).toHaveTextContent("7.50")
-    })
+    expect(grandTotal).toHaveTextContent("1.50")
+ 
+    const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
+  
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "3")
+    expect(grandTotal).toHaveTextContent("7.50")
+    
+    await user.clear(vanillaInput)
+    await user.type(vanillaInput, "2")
+    expect(grandTotal).toHaveTextContent("5.50")
 
-     await waitFor(async () => {
-      const vanillaInput = await screen.findByRole("spinbutton", {name: "Vanilla"})
-
-      await user.clear(vanillaInput)
-      await user.type(vanillaInput, "2")
-      expect(grandTotal).toHaveTextContent("5.50")
-    })
-
-     await waitFor(async () => {
-      const cherriesCheckbox = await screen.findByRole("checkbox", {name: "Cherries"})
-
-      await user.click(cherriesCheckbox)
-      expect(grandTotal).toHaveTextContent("4.00")
-    })
+    await user.click(cherriesCheckbox)
+    expect(grandTotal).toHaveTextContent("4.00")
   })
  })
