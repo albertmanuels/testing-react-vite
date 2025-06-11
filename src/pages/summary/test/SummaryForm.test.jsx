@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+
 import { beforeEach, describe, expect } from "vitest";
 import SummaryForm from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
+import { render, screen } from "../../../utilities/test-utils/testing-library-utils"
 
 describe("Summary Form", () => {
   beforeEach(() => {

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { server } from "../../../mocks/server";
 import { http, HttpResponse } from "msw";
-import { render, screen } from "@testing-library/react";
 import OrderEntry from "../OrderEntry";
+import { render, screen } from "../../../utilities/test-utils/testing-library-utils";
 
 describe("OrderEntry", () => {
   test("handles error for scoops and toppings routes", async () => {
