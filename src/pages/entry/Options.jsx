@@ -14,10 +14,18 @@ const Options = ({ optionType }) => {
   const { totals } = useOrderDetails()
 
   useEffect(() => {
+    const controller = new AbortController()
+  
     axios
-      .get(`http://localhost:3030/${optionType}`)
+      .get(`http://localhost:3030/${optionType}`, {signal: controller.signal})
       .then((response) => setItems(response.data))
-      .catch(() => setError(true));
+      .catch((err) => {
+        if(err.name !== "CanceledError") setError(true)
+      });
+
+    return () => {
+      controller.abort()
+    }
   }, [optionType]);
 
   if(error) {
@@ -40,7 +48,7 @@ const Options = ({ optionType }) => {
       <h2>{title}</h2>
       <p>{formatCurrency(pricePerItem[optionType])} each</p>
       <p>{title} total: {formatCurrency(totals[optionType])}</p>
-      <Row>{optionItems}</Row>
+      <Row style={{display: "flex"}}>{optionItems}</Row>
     </>
   )
 };

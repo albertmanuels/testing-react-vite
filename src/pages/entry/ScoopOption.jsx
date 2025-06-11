@@ -8,7 +8,6 @@ const ScoopOption = ({ name, imagePath }) => {
      updateItemCount(name, parseInt(e.target.value), "scoops");
   }
  
-
   return (
     <Col xs={12} sm={6} md={4} lg={3} style={{ textAlign: "center" }}>
       <img
@@ -28,6 +27,7 @@ const ScoopOption = ({ name, imagePath }) => {
           <Form.Control
             type="number"
             defaultValue={0}
+            min={0}
             onChange={handleChange}
           />
         </Col>
