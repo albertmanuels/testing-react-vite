@@ -22,7 +22,7 @@ describe("totalOrder", () => {
       await user.clear(vanillaInput)
       await user.type(vanillaInput, "1")
     })
-    
+ 
     expect(scoopsSubtotal).toHaveTextContent("2.00")
 
     // update chocolate scoops to 1, and check subtotal
